@@ -1,0 +1,88 @@
+.hover-shadow {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+}
+
+.rich-text-content {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.rich-text-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.editor-container {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.editor-container .ProseMirror {
+  padding: 1rem;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.comment {
+  transition: background-color 0.2s ease;
+}
+
+.comment:hover {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.comments-section {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Custom scrollbar for webkit browsers */
+.comments-section::-webkit-scrollbar,
+.rich-text-content::-webkit-scrollbar,
+.editor-container .ProseMirror::-webkit-scrollbar {
+  width: 8px;
+}
+
+.comments-section::-webkit-scrollbar-track,
+.rich-text-content::-webkit-scrollbar-track,
+.editor-container .ProseMirror::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.comments-section::-webkit-scrollbar-thumb,
+.rich-text-content::-webkit-scrollbar-thumb,
+.editor-container .ProseMirror::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.comments-section::-webkit-scrollbar-thumb:hover,
+.rich-text-content::-webkit-scrollbar-thumb:hover,
+.editor-container .ProseMirror::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Department badge styles */
+.badge.bg-opacity-75 {
+  font-weight: 500;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .rich-text-content {
+    font-size: 0.95rem;
+  }
+
+  .comments-section {
+    max-height: none;
+  }
+}
