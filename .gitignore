@@ -1,0 +1,49 @@
+# Node modules
+node_modules/
+
+# Build output
+build/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Coverage
+coverage/
+
+# Misc
+*.log
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# React build
+client/build/
+
+# Server logs
+server/logs/
+
+# MongoDB data (if local)
+data/
+
+# Others
+*.tgz
