@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the server with nodemon
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
