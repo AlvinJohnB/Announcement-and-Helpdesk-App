@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { useAuth } from "../../context/AuthContext";
 
@@ -20,7 +20,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("/api/users");
+      const res = await api.get("/api/users");
       setUsers(res.data);
       setError("");
     } catch (err) {
@@ -45,9 +45,9 @@ const UserManagement = () => {
     e.preventDefault();
     try {
       if (editingUser) {
-        await axios.put(`/api/users/${editingUser._id}`, formData);
+        await api.put(`/api/users/${editingUser._id}`, formData);
       } else {
-        await axios.post("/api/users", formData);
+        await api.post("/api/users", formData);
       }
       fetchUsers();
       setFormData({
@@ -78,7 +78,7 @@ const UserManagement = () => {
   const handleDelete = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await axios.delete(`/api/users/${userId}`);
+        await api.delete(`/api/users/${userId}`);
         fetchUsers();
       } catch (err) {
         setError("Failed to delete user");
@@ -88,7 +88,7 @@ const UserManagement = () => {
 
   const toggleUserStatus = async (user) => {
     try {
-      await axios.put(`/api/users/${user._id}`, {
+      await api.put(`/api/users/${user._id}`, {
         ...user,
         active: !user.active,
       });

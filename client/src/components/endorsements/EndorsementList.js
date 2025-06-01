@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import EndorsementItem from "./EndorsementItem";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const EndorsementList = () => {
   const [endorsements, setEndorsements] = useState([]);
@@ -9,7 +9,7 @@ const EndorsementList = () => {
 
   const fetchEndorsements = async () => {
     try {
-      const res = await axios.get("/api/endorsements");
+      const res = await api.get("/api/endorsements");
       setEndorsements(res.data);
     } catch (err) {
       // handle error

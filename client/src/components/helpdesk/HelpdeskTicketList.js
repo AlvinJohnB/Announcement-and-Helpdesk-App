@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import HelpdeskTicketItem from "./HelpdeskTicketItem";
 import LoadingSpinner from "../common/LoadingSpinner";
 
@@ -9,7 +9,7 @@ const HelpdeskTicketList = ({ status = "open", department = "All" }) => {
 
   const fetchTickets = async () => {
     try {
-      const res = await axios.get("/api/endorsements");
+      const res = await api.get("/api/endorsements");
       let filtered = res.data.filter((t) => t.status === status);
       if (department !== "All") {
         filtered = filtered.filter((t) => t.department === department);

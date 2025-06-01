@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-import TipTapEditor from "./TipTapEditor";
+import api from "../../utils/api";
+import { useAuth } from "../../context/AuthContext";
+import TipTapEditor from "../common/TipTapEditor";
 
 const EndorsementForm = ({ refreshEndorsements }) => {
   const { user } = useAuth();
@@ -57,7 +57,7 @@ const EndorsementForm = ({ refreshEndorsements }) => {
     setIsSubmitting(true);
     setMessage(null);
     try {
-      await axios.post("/api/endorsements", { ...formData });
+      await api.post("/api/endorsements", { ...formData });
       setMessage({ type: "success", text: "Endorsement posted successfully!" });
       setFormData({
         title: "",

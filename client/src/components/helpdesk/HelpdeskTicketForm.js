@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 
 const HelpdeskTicketForm = ({ refreshTickets }) => {
@@ -39,7 +39,7 @@ const HelpdeskTicketForm = ({ refreshTickets }) => {
     setIsSubmitting(true);
     setMessage(null);
     try {
-      await axios.post("/api/endorsements", formData);
+      await api.post("/api/endorsements", formData);
       setMessage({ type: "success", text: "Ticket submitted successfully!" });
       setFormData({
         subject: "",

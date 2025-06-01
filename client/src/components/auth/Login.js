@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 
 const Login = ({ onLogin }) => {
   const [showRegister, setShowRegister] = useState(false);
@@ -23,9 +23,8 @@ const Login = ({ onLogin }) => {
     setError("");
 
     try {
-      const res = await axios.post("/api/users/login", formData);
+      const res = await api.post("/api/users/login", formData);
       localStorage.setItem("token", res.data.token);
-      axios.defaults.headers.common["x-auth-token"] = res.data.token;
       onLogin(res.data.token);
     } catch (err) {
       setError(err.response?.data?.msg || "Login failed");

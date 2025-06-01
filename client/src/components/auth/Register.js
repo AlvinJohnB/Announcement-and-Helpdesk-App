@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 
 const Register = ({ onToggleForm }) => {
   const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ const Register = ({ onToggleForm }) => {
       return;
     }
     try {
-      const res = await axios.post("/api/users/register", {
+      const res = await api.post("/api/users/register", {
         username,
         password,
         firstName,

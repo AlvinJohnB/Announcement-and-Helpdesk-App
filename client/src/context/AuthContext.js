@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 const AuthContext = createContext(null);
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios.defaults.headers.common["x-auth-token"] = token;
+      // Token handling is done by the api interceptor
       loadUser();
     } else {
       setLoading(false);
@@ -20,12 +20,12 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const res = await axios.get("/api/users/me");
+      const res = await api.get("/api/users/me");
       setUser(res.data);
       setIsAuthenticated(true);
     } catch (err) {
       localStorage.removeItem("token");
-      delete axios.defaults.headers.common["x-auth-token"];
+      // No need to delete header as it's handled by the interceptor
     } finally {
       setLoading(false);
     }
@@ -33,13 +33,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (token) => {
     localStorage.setItem("token", token);
-    axios.defaults.headers.common["x-auth-token"] = token;
+    // Token handling is done by api interceptor
     await loadUser();
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    delete axios.defaults.headers.common["x-auth-token"];
+    // No need to delete header as it's handled by the interceptor
     setUser(null);
     setIsAuthenticated(false);
   };

@@ -1,7 +1,7 @@
 import "./App.css";
 import "./assets/styles/Announcement.css";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./utils/api";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Header from "./components/common/Header";
 import AnnouncementList from "./components/announcements/AnnouncementList";
@@ -24,7 +24,7 @@ function AppContent() {
     try {
       setLoading(true);
       console.log("Fetching announcements, archived:", archived);
-      const res = await axios.get(`/api/announcements?archived=${archived}`);
+      const res = await api.get(`/api/announcements?archived=${archived}`);
       console.log("Received announcements:", res.data);
       setAnnouncements(res.data);
       setError(null);

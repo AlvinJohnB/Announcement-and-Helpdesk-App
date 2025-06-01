@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import api from "../../utils/api";
+import { useAuth } from "../../context/AuthContext";
 
 const EndorsementItem = ({ endorsement, refreshEndorsements }) => {
   const { user } = useAuth();
@@ -62,20 +62,20 @@ const EndorsementItem = ({ endorsement, refreshEndorsements }) => {
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this endorsement?")) {
-      await axios.delete(`/api/endorsements/${endorsement._id}`);
+      await api.delete(`/api/endorsements/${endorsement._id}`);
       refreshEndorsements();
     }
   };
 
   const handleArchive = async () => {
-    await axios.put(`/api/endorsements/${endorsement._id}/archive`);
+    await api.put(`/api/endorsements/${endorsement._id}/archive`);
     refreshEndorsements();
   };
 
   const fetchComments = async () => {
     setLoadingComments(true);
     try {
-      const res = await axios.get(
+      const res = await api.get(
         `/api/endorsements/${endorsement._id}/comments`
       );
       setComments(res.data);
@@ -91,7 +91,7 @@ const EndorsementItem = ({ endorsement, refreshEndorsements }) => {
     if (!comment.trim()) return;
     setIsSubmitting(true);
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `/api/endorsements/${endorsement._id}/comments`,
         { content: comment }
       );

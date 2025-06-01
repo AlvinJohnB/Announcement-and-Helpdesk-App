@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 import TipTapEditor from "../common/TipTapEditor";
 
@@ -74,7 +74,7 @@ const AnnouncementItem = ({
   const handleArchiveToggle = async () => {
     try {
       setIsArchiving(true);
-      const response = await axios.put(
+      const response = await api.put(
         `/api/announcements/${announcement._id}/archive`
       );
       if (response.data) {
@@ -94,7 +94,7 @@ const AnnouncementItem = ({
 
     setIsSubmitting(true);
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `/api/announcements/${announcement._id}/comments`,
         {
           content: comment,
@@ -126,14 +126,11 @@ const AnnouncementItem = ({
     }
 
     try {
-      const response = await axios.put(
-        `/api/announcements/${announcement._id}`,
-        {
-          title: editedTitle,
-          content: editedContent,
-          department: announcement.department,
-        }
-      );
+      const response = await api.put(`/api/announcements/${announcement._id}`, {
+        title: editedTitle,
+        content: editedContent,
+        department: announcement.department,
+      });
 
       if (response.data) {
         setEditMode(false);
@@ -161,7 +158,7 @@ const AnnouncementItem = ({
       return;
     setIsDeleting(true);
     try {
-      await axios.delete(`/api/announcements/${announcement._id}`);
+      await api.delete(`/api/announcements/${announcement._id}`);
       if (onUpdate) onUpdate();
     } catch (err) {
       alert(err.response?.data?.msg || "Error deleting announcement");

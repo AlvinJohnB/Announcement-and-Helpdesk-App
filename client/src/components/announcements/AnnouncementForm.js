@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 import TipTapEditor from "../common/TipTapEditor";
 
@@ -68,7 +68,7 @@ const AnnouncementForm = ({ refreshAnnouncements }) => {
     setMessage(null);
 
     try {
-      await axios.post("/api/announcements", {
+      await api.post("/api/announcements", {
         ...formData,
       });
 
