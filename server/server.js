@@ -11,6 +11,10 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+// Create superadmin user if not exists
+const createSuperAdmin = require("./createSuperAdmin");
+createSuperAdmin();
+
 const app = express();
 
 // Init Middleware

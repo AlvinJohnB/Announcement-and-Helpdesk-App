@@ -4,7 +4,21 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import TipTapEditor from "../common/TipTapEditor";
 
-const AnnouncementItem = ({ announcement, onUpdate }) => {
+// Accept departments as a prop or fallback to default
+const DEFAULT_DEPARTMENTS = [
+  { name: "Laboratory", color: "primary", accent: "#0d6efd" },
+  { name: "Imaging", color: "info", accent: "#0dcaf0" },
+  { name: "Reception", color: "success", accent: "#198754" },
+  { name: "Phlebotomy", color: "danger", accent: "#dc3545" },
+  { name: "HK/Messenger", color: "warning", accent: "#ffc107" },
+  { name: "Others", color: "secondary", accent: "#6c757d" },
+];
+
+const AnnouncementItem = ({
+  announcement,
+  onUpdate,
+  departments = DEFAULT_DEPARTMENTS,
+}) => {
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState("");
@@ -13,6 +27,7 @@ const AnnouncementItem = ({ announcement, onUpdate }) => {
   const [editedContent, setEditedContent] = useState(announcement.content);
   const [isArchiving, setIsArchiving] = useState(false);
   const [editedTitle, setEditedTitle] = useState(announcement.title);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -23,35 +38,20 @@ const AnnouncementItem = ({ announcement, onUpdate }) => {
       minute: "2-digit",
     });
   };
-  const getBadgeColor = (department) => {
-    switch (department) {
-      case "Laboratory":
-        return "primary";
-      case "Imaging":
-        return "info";
-      case "Reception":
-        return "success";
-      case "Phlebotomy":
-        return "danger";
-      case "HK/Messenger":
-        return "warning";
-      case "Others":
-        return "secondary";
-      default:
-        return "secondary";
-    }
-  };
-  const getCardAccent = (department) => {
-    const colors = {
-      Laboratory: "#0d6efd",
-      Imaging: "#0dcaf0",
-      Reception: "#198754",
-      Phlebotomy: "#dc3545",
-      "HK/Messenger": "#ffc107",
-      Others: "#6c757d",
-    };
-    return colors[department] || colors.Others;
-  };
+
+  // Build lookup maps for badge color and accent
+  const badgeColorMap = Object.fromEntries(
+    departments.map((d) => [d.name, d.color])
+  );
+  const accentMap = Object.fromEntries(
+    departments.map((d) => [d.name, d.accent])
+  );
+
+  const getBadgeColor = (department) =>
+    badgeColorMap[department] || "secondary";
+  const getCardAccent = (department) =>
+    accentMap[department] || accentMap["Others"] || "#6c757d";
+
   // Sanitize HTML content
   const createSanitizedHTML = (content) => {
     return {
@@ -64,6 +64,7 @@ const AnnouncementItem = ({ announcement, onUpdate }) => {
       announcement.authorId === user._id ||
       (user.department === announcement.department && user.role === "admin"));
 
+  const canDelete = user && user.role === "superadmin";
   const canArchive =
     user &&
     (user.role === "superadmin" ||
@@ -151,6 +152,24 @@ const AnnouncementItem = ({ announcement, onUpdate }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (
+      !window.confirm(
+        "Are you sure you want to permanently delete this announcement? This action cannot be undone."
+      )
+    )
+      return;
+    setIsDeleting(true);
+    try {
+      await axios.delete(`/api/announcements/${announcement._id}`);
+      if (onUpdate) onUpdate();
+    } catch (err) {
+      alert(err.response?.data?.msg || "Error deleting announcement");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div
       className="card mb-4 border-0 shadow-sm hover-shadow transition-all"
@@ -215,6 +234,21 @@ const AnnouncementItem = ({ announcement, onUpdate }) => {
                       } me-1`}
                     ></i>
                     {announcement.isArchived ? "Unarchive" : "Archive"}
+                  </>
+                )}
+              </button>
+            )}
+            {canDelete && (
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={handleDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? (
+                  <span className="spinner-border spinner-border-sm" />
+                ) : (
+                  <>
+                    <i className="fas fa-trash me-1"></i> Delete
                   </>
                 )}
               </button>

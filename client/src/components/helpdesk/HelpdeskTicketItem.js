@@ -203,6 +203,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
           {ticket.edited && <span className="text-muted ms-2">(edited)</span>}
         </div>
         <div className="mb-2">
+          {/* Only show Delete button if user has delete access */}
           {canDelete && (
             <button
               className="btn btn-danger btn-sm me-2"

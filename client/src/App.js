@@ -191,6 +191,12 @@ function AppContent() {
           </>
         )}
       </div>
+      <footer className="bg-light text-center py-3 mt-auto border-top small text-muted">
+        <div>
+          &copy; {new Date().getFullYear()} Announcements and Helpdesk &mdash;
+          Developed by AlvinJohnB
+        </div>
+      </footer>
     </div>
   );
 }
