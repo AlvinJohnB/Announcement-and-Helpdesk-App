@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-import TipTapEditor from "./TipTapEditor";
+import { useAuth } from "../../context/AuthContext";
+import TipTapEditor from "../common/TipTapEditor";
 
 const AnnouncementItem = ({ announcement, onUpdate }) => {
   const { user } = useAuth();

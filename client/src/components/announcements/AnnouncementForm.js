@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
-import TipTapEditor from "./TipTapEditor";
+import { useAuth } from "../../context/AuthContext";
+import TipTapEditor from "../common/TipTapEditor";
 
 const AnnouncementForm = ({ refreshAnnouncements }) => {
   const { user } = useAuth();

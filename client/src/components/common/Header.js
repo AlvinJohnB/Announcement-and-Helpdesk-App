@@ -10,7 +10,7 @@ const Header = ({ userInfo, onLogout }) => {
           <div>
             <h1 className="h3 fw-bold mb-1 d-flex align-items-center">
               <i className="fas fa-bullhorn me-2"></i>
-              Announcement Board
+              Announcements and Helpdesk
             </h1>
             {!userInfo && (
               <p className="text-light opacity-75 small mb-0 d-none d-sm-block">

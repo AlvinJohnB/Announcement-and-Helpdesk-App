@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AnnouncementItem from "./AnnouncementItem";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const AnnouncementList = ({
   announcements: initialAnnouncements,

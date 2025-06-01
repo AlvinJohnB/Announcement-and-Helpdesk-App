@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import HelpdeskTicketItem from "./HelpdeskTicketItem";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const HelpdeskTicketList = ({ status = "open", department = "All" }) => {
   const [tickets, setTickets] = useState([]);

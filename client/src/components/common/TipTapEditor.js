@@ -7,7 +7,7 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import { NodeSelection } from "@tiptap/pm/state";
-import "./TipTapEditor.css";
+import "../../components/TipTapEditor.css";
 
 const MenuBar = ({ editor }) => {
   if (!editor) {

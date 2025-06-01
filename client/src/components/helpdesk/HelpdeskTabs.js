@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HelpdeskTicketList from "./HelpdeskTicketList";
 import HelpdeskTicketForm from "./HelpdeskTicketForm";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const departments = [
   "All",
