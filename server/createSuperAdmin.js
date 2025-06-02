@@ -18,11 +18,6 @@ async function createSuperAdmin() {
         active: true,
         createdAt: new Date(),
       });
-      console.log(
-        `Superadmin user created: ${
-          process.env.SUPERADMIN_USERNAME || "ALVINJOHNEB"
-        } / ${password}`
-      );
     }
   } catch (err) {
     console.error("Error creating superadmin:", err);

@@ -289,12 +289,6 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
         )}
         {ticket.status === "closed" && (
           <>
-            {console.log(
-              "DEBUG closedBy:",
-              ticket.closedBy,
-              "closedByName:",
-              ticket.closedByName
-            )}
             <div className="alert alert-info d-flex align-items-center mt-3">
               <i className="fas fa-lock me-2"></i>
               <span>

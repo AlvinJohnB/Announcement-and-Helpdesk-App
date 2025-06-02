@@ -26,9 +26,9 @@ function AppContent() {
   const fetchAnnouncements = async (archived = false) => {
     try {
       setLoading(true);
-      console.log("Fetching announcements, archived:", archived);
+
       const res = await api.get(`/api/announcements?archived=${archived}`);
-      console.log("Received announcements:", res.data);
+
       setAnnouncements(res.data);
       setError(null);
     } catch (err) {
