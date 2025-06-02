@@ -10,6 +10,9 @@ import LoadingSpinner from "./components/common/LoadingSpinner";
 import Login from "./components/auth/Login";
 import UserManagement from "./components/auth/UserManagement";
 import HelpdeskTabs from "./components/helpdesk/HelpdeskTabs";
+import QCTestCard from "./components/QCTestCard";
+import QCTestList from "./components/QCTestList";
+import QCHomeTab from "./components/QCHomeTab";
 
 function AppContent() {
   const { isAuthenticated, user, login, logout } = useAuth();
@@ -42,8 +45,9 @@ function AppContent() {
 
   const handleParentTabChange = (tab) => {
     setParentTab(tab);
-    // Reset child tab if switching to announcement
+    // Reset child tab if switching to announcement or qcannouncements
     if (tab === "announcement") setAnnouncementTab("view");
+    else if (tab === "qcannouncements") setAnnouncementTab("qc-home");
   };
   const handleAnnouncementTabChange = (tab) => {
     setAnnouncementTab(tab);
@@ -97,6 +101,17 @@ function AppContent() {
                 >
                   <i className="fas fa-ticket-alt me-2"></i>
                   Helpdesk
+                </button>
+              </li>
+              <li className="nav-item">
+                <button
+                  className={`nav-link ${
+                    parentTab === "qcannouncements" ? "active" : ""
+                  }`}
+                  onClick={() => handleParentTabChange("qcannouncements")}
+                >
+                  <i className="fas fa-vials me-2"></i>
+                  QC Announcements
                 </button>
               </li>
               {(user?.role === "superadmin" || user?.role === "admin") && (
@@ -182,6 +197,41 @@ function AppContent() {
 
             {/* Helpdesk Tab */}
             {parentTab === "helpdesk" && <HelpdeskTabs />}
+
+            {/* QC Announcements Tab */}
+            {parentTab === "qcannouncements" && (
+              <>
+                {/* Child Tabs for QC Announcements */}
+                <ul className="nav nav-tabs mb-4 flex-wrap gap-2">
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        announcementTab === "qc-home" ? "active" : ""
+                      }`}
+                      onClick={() => setAnnouncementTab("qc-home")}
+                    >
+                      <i className="fas fa-home me-2"></i>
+                      Home
+                    </button>
+                  </li>
+                  {((user?.department && user.department.toLowerCase().includes("lab")) || user?.role === "superadmin") && (
+                    <li className="nav-item">
+                      <button
+                        className={`nav-link ${
+                          announcementTab === "qc-list" ? "active" : ""
+                        }`}
+                        onClick={() => setAnnouncementTab("qc-list")}
+                      >
+                        <i className="fas fa-list me-2"></i>
+                        Test List
+                      </button>
+                    </li>
+                  )}
+                </ul>
+                {announcementTab === "qc-home" && <QCHomeTab />}
+                {announcementTab === "qc-list" && ((user?.department && user.department.toLowerCase().includes("lab")) || user?.role === "superadmin") && <QCTestList />}
+              </>
+            )}
 
             {/* User Management Tab */}
             {parentTab === "users" &&
