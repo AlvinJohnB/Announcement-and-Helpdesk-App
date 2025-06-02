@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const QCTestSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -6,7 +6,7 @@ const QCTestSchema = new mongoose.Schema({
   remaining: { type: Number, default: null },
   createdAt: { type: Date, default: Date.now },
   section: { type: String, required: false },
-  remarks: { type: String, default: "" }
+  remarks: { type: String, default: "" },
 });
 
-module.exports = mongoose.model('QCTest', QCTestSchema);
+module.exports = mongoose.model("QCTest", QCTestSchema);

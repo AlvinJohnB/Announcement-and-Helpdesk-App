@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DOMPurify from "dompurify";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 
 const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
@@ -72,7 +72,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     setForbidden(false);
     if (window.confirm("Are you sure you want to delete this ticket?")) {
       try {
-        await axios.delete(`/api/endorsements/${ticket._id}`);
+        await api.delete(`/api/endorsements/${ticket._id}`);
         refreshTickets();
       } catch (err) {
         if (err.response && err.response.status === 403) setForbidden(true);
@@ -91,7 +91,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     setIsClosing(true);
     setCloseError("");
     try {
-      await axios.put(`/api/endorsements/${ticket._id}/close`, {
+      await api.put(`/api/endorsements/${ticket._id}/close`, {
         reason: closeReason,
       });
       setShowCloseModal(false);
@@ -109,7 +109,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     setForbidden(false);
     if (window.confirm("Are you sure you want to re-open this ticket?")) {
       try {
-        await axios.put(`/api/endorsements/${ticket._id}/reopen`);
+        await api.put(`/api/endorsements/${ticket._id}/reopen`);
         refreshTickets();
       } catch (err) {
         if (err.response && err.response.status === 403) setForbidden(true);
@@ -120,7 +120,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
   const fetchComments = async () => {
     setLoadingComments(true);
     try {
-      const res = await axios.get(`/api/endorsements/${ticket._id}/comments`);
+      const res = await api.get(`/api/endorsements/${ticket._id}/comments`);
       setComments(res.data);
     } catch (err) {
       setComments([]);
@@ -135,7 +135,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     if (!comment.trim()) return;
     setIsSubmitting(true);
     try {
-      const res = await axios.post(`/api/endorsements/${ticket._id}/comments`, {
+      const res = await api.post(`/api/endorsements/${ticket._id}/comments`, {
         content: comment,
       });
       setComments(res.data);
@@ -153,7 +153,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     if (!editCommentValue.trim()) return;
     setIsSubmitting(true);
     try {
-      const res = await axios.put(
+      const res = await api.put(
         `/api/endorsements/${ticket._id}/comments/${comments[idx]._id}`,
         {
           content: editCommentValue,

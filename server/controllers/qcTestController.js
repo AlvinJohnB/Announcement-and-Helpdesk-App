@@ -1,11 +1,11 @@
-const QCTest = require('../models/QCTest');
+const QCTest = require("../models/QCTest");
 
 exports.getAllQCTests = async (req, res) => {
   try {
     const tests = await QCTest.find().sort({ createdAt: -1 });
     res.json(tests);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -28,7 +28,7 @@ exports.createQCTest = async (req, res) => {
       return res.status(201).json(test);
     }
   } catch (err) {
-    res.status(400).json({ error: 'Invalid data' });
+    res.status(400).json({ error: "Invalid data" });
   }
 };
 
@@ -37,6 +37,6 @@ exports.deleteQCTest = async (req, res) => {
     await QCTest.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };

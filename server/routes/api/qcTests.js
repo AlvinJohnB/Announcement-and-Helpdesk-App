@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const qcTestController = require('../../controllers/qcTestController');
+const qcTestController = require("../../controllers/qcTestController");
 
 // GET all QC tests
-router.get('/', qcTestController.getAllQCTests);
+router.get("/", qcTestController.getAllQCTests);
 
 // POST create a new QC test
-router.post('/', qcTestController.createQCTest);
+router.post("/", qcTestController.createQCTest);
 
 // DELETE a QC test
-router.delete('/:id', qcTestController.deleteQCTest);
+router.delete("/:id", qcTestController.deleteQCTest);
 
 module.exports = router;

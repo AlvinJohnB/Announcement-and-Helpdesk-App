@@ -214,7 +214,9 @@ function AppContent() {
                       Home
                     </button>
                   </li>
-                  {((user?.department && user.department.toLowerCase().includes("lab")) || user?.role === "superadmin") && (
+                  {((user?.department &&
+                    user.department.toLowerCase().includes("lab")) ||
+                    user?.role === "superadmin") && (
                     <li className="nav-item">
                       <button
                         className={`nav-link ${
@@ -229,7 +231,10 @@ function AppContent() {
                   )}
                 </ul>
                 {announcementTab === "qc-home" && <QCHomeTab />}
-                {announcementTab === "qc-list" && ((user?.department && user.department.toLowerCase().includes("lab")) || user?.role === "superadmin") && <QCTestList />}
+                {announcementTab === "qc-list" &&
+                  ((user?.department &&
+                    user.department.toLowerCase().includes("lab")) ||
+                    user?.role === "superadmin") && <QCTestList />}
               </>
             )}
 
