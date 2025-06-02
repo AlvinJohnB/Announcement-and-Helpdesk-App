@@ -21,6 +21,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/announcement-board
       - JWT_SECRET=Alvinjohn13 # Change this in production
+      - NODE_ENV=production
     depends_on:
       - mongodb
     networks:
@@ -33,6 +34,8 @@ services:
     restart: always
     ports:
       - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://192.168.43.241:5000
     depends_on:
       - server
     networks:

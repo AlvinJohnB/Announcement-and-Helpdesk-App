@@ -24,18 +24,9 @@ app.use(bodyParser.json());
 
 // Define Routes
 app.use("/api/endorsements", require("./routes/api/endorsements"));
-app.use("/api/endorsements", require("./routes/api/endorsementComments"));
 app.use("/api/announcements", require("./routes/api/announcements"));
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/qctests", require("./routes/api/qcTests"));
-
-// Serve static files from client/build in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-  });
-}
 
 const PORT = process.env.PORT || 5000;
 
