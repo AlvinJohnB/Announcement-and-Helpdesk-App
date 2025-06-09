@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
-import TipTapEditor from "../common/TipTapEditor";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AnnouncementForm = ({ refreshAnnouncements }) => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ const AnnouncementForm = ({ refreshAnnouncements }) => {
     content: "",
     department: user?.department || "",
   });
+  const [contentHtml, setContentHtml] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
@@ -38,7 +40,8 @@ const AnnouncementForm = ({ refreshAnnouncements }) => {
   };
 
   const handleEditorChange = (value) => {
-    setFormData({ ...formData, content: value });
+    setContentHtml(value);
+    setFormData((prev) => ({ ...prev, content: value }));
   };
 
   const onSubmit = async (e) => {
@@ -81,6 +84,7 @@ const AnnouncementForm = ({ refreshAnnouncements }) => {
         content: "",
         department: user?.department || "",
       }));
+      setContentHtml("");
       if (refreshAnnouncements) {
         refreshAnnouncements();
       }
@@ -136,10 +140,20 @@ const AnnouncementForm = ({ refreshAnnouncements }) => {
           <div className="mb-3">
             <label htmlFor="content" className="form-label fw-semibold">
               Content <span className="text-danger">*</span>
-            </label>{" "}
-            <TipTapEditor
-              value={content}
+            </label>
+            <ReactQuill
+              theme="snow"
+              value={contentHtml}
               onChange={handleEditorChange}
+              modules={{
+                toolbar: [
+                  ["bold", "italic", "underline", "strike"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link", "image"],
+                  ["clean"],
+                ],
+              }}
+              placeholder="Write your announcement. You can paste images here."
               style={{ height: "300px", marginBottom: "50px" }}
             />
           </div>

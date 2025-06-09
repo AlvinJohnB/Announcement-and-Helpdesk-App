@@ -153,6 +153,7 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
     if (!editCommentValue.trim()) return;
     setIsSubmitting(true);
     try {
+      // Correct endpoint for editing a helpdesk comment
       const res = await api.put(
         `/api/endorsements/${ticket._id}/comments/${comments[idx]._id}`,
         {
@@ -192,7 +193,21 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
         <div
           className="mb-2"
           dangerouslySetInnerHTML={createSanitizedHTML(ticket.description)}
+          style={{
+            maxWidth: "100%",
+            overflowX: "auto",
+            wordBreak: "break-word",
+          }}
         />
+        {/* Ensure images in the description are responsive */}
+        <style>{`
+          .card .rich-text-content img, .card .mb-2 img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0.5em 0;
+          }
+        `}</style>
         <div className="text-muted small mb-2">
           Status:{" "}
           <span className="fw-bold">

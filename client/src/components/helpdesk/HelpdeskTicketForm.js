@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const HelpdeskTicketForm = ({ refreshTickets }) => {
   const { user } = useAuth();
@@ -10,6 +12,7 @@ const HelpdeskTicketForm = ({ refreshTickets }) => {
     priority: "medium",
     department: user?.department || "",
   });
+  const [descriptionHtml, setDescriptionHtml] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState(null);
 
@@ -25,6 +28,11 @@ const HelpdeskTicketForm = ({ refreshTickets }) => {
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleDescriptionChange = (value) => {
+    setDescriptionHtml(value);
+    setFormData((prev) => ({ ...prev, description: value }));
   };
 
   const onSubmit = async (e) => {
@@ -47,6 +55,7 @@ const HelpdeskTicketForm = ({ refreshTickets }) => {
         priority: "medium",
         department: user?.department || "",
       });
+      setDescriptionHtml("");
       if (refreshTickets) refreshTickets();
     } catch (err) {
       setMessage({
@@ -98,13 +107,19 @@ const HelpdeskTicketForm = ({ refreshTickets }) => {
             <label className="form-label fw-semibold">
               Description <span className="text-danger">*</span>
             </label>
-            <textarea
-              className="form-control"
-              name="description"
-              value={formData.description}
-              onChange={onChange}
-              required
-              rows={4}
+            <ReactQuill
+              theme="snow"
+              value={descriptionHtml}
+              onChange={handleDescriptionChange}
+              modules={{
+                toolbar: [
+                  ["bold", "italic", "underline", "strike"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link", "image"],
+                  ["clean"],
+                ],
+              }}
+              placeholder="Describe your issue. You can paste images here."
             />
           </div>
           <div className="mb-3">
