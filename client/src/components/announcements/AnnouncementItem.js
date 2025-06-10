@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import DOMPurify from "dompurify";
 import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
-import TipTapEditor from "../common/TipTapEditor";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 // Accept departments as a prop or fallback to default
 const DEFAULT_DEPARTMENTS = [
@@ -278,13 +279,18 @@ const AnnouncementItem = ({
             className="editor-container rounded border"
             style={{ maxHeight: "400px" }}
           >
-            <TipTapEditor
+            <ReactQuill
+              theme="snow"
               value={editedContent}
               onChange={setEditedContent}
-              style={{
-                height: "100%",
-                maxHeight: "400px",
-                marginBottom: "0",
+              style={{ height: "100%", maxHeight: "400px", marginBottom: "0" }}
+              modules={{
+                toolbar: [
+                  ["bold", "italic", "underline", "strike"],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["link", "image"],
+                  ["clean"],
+                ],
               }}
             />
           </div>
@@ -328,33 +334,6 @@ const AnnouncementItem = ({
               </span>
             </div>
 
-            {/* Comment Form */}
-            <form onSubmit={handleCommentSubmit} className="mb-4">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Add a comment..."
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="submit"
-                  className={`btn ${
-                    isSubmitting ? "btn-secondary" : "btn-primary"
-                  }`}
-                  disabled={isSubmitting || !comment.trim()}
-                >
-                  {isSubmitting ? (
-                    <span className="spinner-border spinner-border-sm" />
-                  ) : (
-                    <i className="fas fa-paper-plane"></i>
-                  )}
-                </button>
-              </div>
-            </form>
-
             {/* Comments List */}
             <div className="comments-list">
               {announcement.comments?.map((comment, index) => (
@@ -385,10 +364,48 @@ const AnnouncementItem = ({
                       {formatDate(comment.createdAt)}
                     </small>
                   </div>
-                  <div className="comment-content">{comment.content}</div>
+                  <div
+                    className="comment-content"
+                    dangerouslySetInnerHTML={createSanitizedHTML(
+                      comment.content
+                    )}
+                  />
                 </div>
               ))}
             </div>
+
+            {/* Comment Form */}
+            <form onSubmit={handleCommentSubmit} className="my-4">
+              <div className="input-group flex-column">
+                <ReactQuill
+                  theme="snow"
+                  value={comment}
+                  onChange={setComment}
+                  style={{ minHeight: 80, background: "#fff", width: "100%" }}
+                  modules={{
+                    toolbar: [
+                      ["bold", "italic", "underline", "strike"],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["link", "image"],
+                      ["clean"],
+                    ],
+                  }}
+                />
+                <button
+                  type="submit"
+                  className={`btn ${
+                    isSubmitting ? "btn-secondary" : "btn-primary"
+                  } align-self-end mt-2`}
+                  disabled={isSubmitting || !comment.trim()}
+                >
+                  {isSubmitting ? (
+                    <span className="spinner-border spinner-border-sm" />
+                  ) : (
+                    <i className="fas fa-paper-plane"></i>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         )}
       </div>

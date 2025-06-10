@@ -19,8 +19,8 @@ const app = express();
 
 // Init Middleware
 app.use(cors());
-app.use(express.json({ extended: false, limit: '10mb' }));
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(express.json({ extended: false, limit: "10mb" }));
+app.use(bodyParser.json({ limit: "10mb" }));
 
 // Define Routes
 app.use("/api/endorsements", require("./routes/api/endorsements"));

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import DOMPurify from "dompurify";
 import api from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
   const { user } = useAuth();
@@ -380,40 +382,57 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
                       // Only allow editing if ticket is not closed
                       ticket.status !== "closed" ? (
                         <form
-                          className="d-flex align-items-center"
+                          className="d-flex align-items-center w-100"
                           onSubmit={(e) => handleEditCommentSubmit(e, idx)}
                         >
-                          <input
-                            type="text"
-                            className="form-control form-control-sm me-2"
-                            value={editCommentValue}
-                            onChange={(e) =>
-                              setEditCommentValue(e.target.value)
-                            }
-                            maxLength={300}
-                            required
-                            autoFocus
-                          />
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <ReactQuill
+                              theme="snow"
+                              value={editCommentValue}
+                              onChange={setEditCommentValue}
+                              style={{ minHeight: 80, background: "#fff" }}
+                              modules={{
+                                toolbar: [
+                                  ["bold", "italic", "underline", "strike"],
+                                  [{ list: "ordered" }, { list: "bullet" }],
+                                  ["link", "image"],
+                                  ["clean"],
+                                ],
+                              }}
+                            />
+                          </div>
                           <button
-                            className="btn btn-success btn-sm me-1"
+                            className="btn btn-success btn-sm me-1 ms-2"
                             type="submit"
+                            style={{ height: 38 }}
                           >
                             Save
                           </button>
                           <button
                             className="btn btn-secondary btn-sm"
                             type="button"
+                            style={{ height: 38 }}
                             onClick={() => setEditCommentIdx(null)}
                           >
                             Cancel
                           </button>
                         </form>
                       ) : (
-                        <>{c.content}</>
+                        <div
+                          dangerouslySetInnerHTML={createSanitizedHTML(
+                            c.content
+                          )}
+                          className="rich-text-content"
+                        />
                       )
                     ) : (
                       <>
-                        {c.content}
+                        <div
+                          dangerouslySetInnerHTML={createSanitizedHTML(
+                            c.content
+                          )}
+                          className="rich-text-content"
+                        />
                         {c.edited && (
                           <span
                             className="text-muted ms-2"
@@ -453,7 +472,12 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
                                     key={hIdx}
                                     className="border rounded p-2 mb-1 bg-light-subtle"
                                   >
-                                    <div className="small">{h.content}</div>
+                                    <div
+                                      className="small"
+                                      dangerouslySetInnerHTML={createSanitizedHTML(
+                                        h.content
+                                      )}
+                                    />
                                     <div className="text-muted small">
                                       Edited: {formatDate(h.editedAt)}
                                     </div>
@@ -473,19 +497,23 @@ const HelpdeskTicketItem = ({ ticket, refreshTickets }) => {
             {/* Only allow adding to communication trail if not closed */}
             {ticket.status !== "closed" && user && (
               <form className="mt-2" onSubmit={handleCommentSubmit}>
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Add to communication trail..."
+                <div className="input-group flex-column">
+                  <ReactQuill
+                    theme="snow"
                     value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    disabled={isSubmitting}
-                    maxLength={300}
-                    required
+                    onChange={setComment}
+                    style={{ minHeight: 80, background: "#fff", width: "100%" }}
+                    modules={{
+                      toolbar: [
+                        ["bold", "italic", "underline", "strike"],
+                        [{ list: "ordered" }, { list: "bullet" }],
+                        ["link", "image"],
+                        ["clean"],
+                      ],
+                    }}
                   />
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-primary align-self-end mt-2"
                     type="submit"
                     disabled={isSubmitting || !comment.trim()}
                   >
